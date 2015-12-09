@@ -37,8 +37,31 @@
                 //apply old settings
                 settingsApply();
                 initPopUpDeck();
+                initFrontCanvas();
             }
-
+            
+            //code for frontcanvas;
+            var frontCanvas;
+            function resizeFrontCanvas(){
+                frontCanvas.width = window.innerWidth-1;    
+                frontCanvas.height = window.innerHeight-1;    
+                frontCanvas.scale = frontCanvas.height / $("screen").height;
+                frontCanvas.trans = (frontCanvas.width - $("screen").width * frontCanvas.scale)/2;
+                console.log(frontCanvas.trans);
+                frontCanvas.ctx.transform(frontCanvas.scale, 0, 0, frontCanvas.scale, frontCanvas.trans, 0);
+                refreshFrontCanvas();
+            }
+            function refreshFrontCanvas(){
+                frontCanvas.ctx.drawImage($("screen"),0,0);
+            }
+            function initFrontCanvas(){
+                frontCanvas = $("frontscreen");
+                frontCanvas.scale = 1;
+                frontCanvas.trans = 0;
+                frontCanvas.ctx = frontCanvas.getContext("2d");
+                frontCanvas.width = $("screen").width;
+                frontCanvas.height = $("screen").height;
+            }
 
             //pop up message procedure
             var popUpDeck = null;
@@ -145,7 +168,6 @@
                         document.title = title;
                         button = $("rdpconnect");
                         button.removeEvents();
-                        window.removeEvent('resize', OnDesktopSize);
                         button.value = 'Disconnect';
                         button.addEvent('click', rdp.Disconnect.bind(rdp));
                         window.addEvent("beforeunload", rdp.Disconnect.bind(rdp));
@@ -160,7 +182,6 @@
                         button.removeEvents();
                         button.value = 'Connect';
                         button.addEvent('click', function(){RDPStart();});
-                        OnDesktopSize();
                         window.addEvent('resize', OnDesktopSize);
                         });
                 rdp.addEvent('mouserelease', ResetRdpMouseFlags);
@@ -221,7 +242,7 @@
             }
 
             function OnDesktopSize() {
-               ResizeCanvas($('dtsize').value);
+               resizeFrontCanvas();
                DrawLogo();
             }
 
@@ -266,28 +287,6 @@
                             var scale = ($('screen').height - 20) / ih;
                             $('screen').getContext('2d').drawImage(this, 10, 10, Math.round(iw * scale), Math.round(ih * scale));
                     }.bind(logo));
-            }
-
-            function ResizeCanvas(sz) {
-                var w, h;
-                if (sz == 'auto') {
-                    w = window.getCoordinates().width;
-                    h = window.getCoordinates().height;
-                    if (RIMtablet) {
-                        // Toplevel bar not removable
-                        h -= 31;
-                    }
-                    if (w % 2) {
-                        w -= 1;
-                    }
-                } else {
-                    var sza = sz.split('x');
-                    var w = sza[0];
-                    var h = sza[1];
-                }
-                $('screen').width = w-50;
-                $('screen').height = h-50;
-                $('screen').style["margin"] = "0 auto";
             }
 
 	    var sendDisconnect = function() {
@@ -416,9 +415,7 @@
 
                     var querystring = window.location.href.slice(window.location.href.indexOf('?'))
 
-                    $('dtsize').addEvent('change', OnDesktopSize);
                     var tabs = new SimpleTabs('rdpdialog',{selector:'h4'});
-                    OnDesktopSize();
                     if (RIMtablet) {
                         // Set default performance flags to modem
                         $('perf').value = '2';
@@ -486,8 +483,8 @@
             });
         </script>
     </head>
-    <body id="wrapper" onload="initBody()">
-        <div id="extracommands" style="height:28px; background-color:#f1f1f1; padding-left:25px; cursor:default; visibility:hidden;">
+    <body id="wrapper" onload="initBody()" style="overflow:hidden;">
+        <div id="extracommands" style="position:absolute; height:28px; background-color:#f1f1f1; padding-left:25px; cursor:default; visibility:hidden;">
             Send keys:
             <ul>
 
@@ -504,9 +501,15 @@
             <button id="disconnect" type="button" style="float:right; margin-right:40px; margin-top:2px">Disconnect</button>
         </div>
         <div id="IMEhelper" style="z-index:1111;visibility:hidden;height:auto;width:auto;display:inline;position:absolute;background-color:#ffffff;"></div>
-        <canvas id="screen">
+        <div style="position:absolute">
+        <canvas id="screen" style="position:absolute;visibility:hidden;margin:0;border:0">
+        </canvas>
+        </div>
+        <div style="position:absolute">
+        <canvas id="frontscreen" style="margin:0;border:0;position:absolute;">
         <p class="error">Sorry, It looks as though your browser does not support the canvas tag.</p>
         </canvas>
+        </div>
         <div id="dvLoading" style="position:fixed; left:45%; top:45%; visibility:hidden;"><img src="images/loading.gif"></div>
         <noscript><p class="error">Please enable JavaScript.</p></noscript>
         <table width="400px" id="maindialog" class="invisible">
