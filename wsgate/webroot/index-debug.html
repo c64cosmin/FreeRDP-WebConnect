@@ -46,7 +46,7 @@
                 frontCanvas.scale = window.innerHeight / $("screen").height;
                 frontCanvas.width = $("screen").width * frontCanvas.scale;
                 frontCanvas.height = window.innerHeight;
-                frontCanvas.trans = (window.innerWidth - $("screen").width * frontCanvas.scale)/2;
+                frontCanvas.trans = (window.innerWidth - frontCanvas.width)/2;
                 frontCanvas.setStyle("left", frontCanvas.trans + "px");
                 frontCanvas.setStyle("top", "0px");
                 frontCanvas.ctx.transform(frontCanvas.scale, 0, 0, frontCanvas.scale, 0, 0);
@@ -61,6 +61,9 @@
             }
             function refreshFrontCanvas(){
                 frontCanvas.ctx.drawImage($("screen"),0,0);
+            }
+            function clearFrontCanvas(){
+                frontCanvas.ctx.clearRect(0, 0, frontCanvas.width / frontCanvas.scale, frontCanvas.height / frontCanvas.scale);
             }
             function initFrontCanvas(){
                 frontCanvas = $("frontscreen");

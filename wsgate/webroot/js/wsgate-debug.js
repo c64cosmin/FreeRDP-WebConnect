@@ -698,6 +698,7 @@ wsgate.RDP = new Class( {
             this.cI.removeEvents();
             this.cI.destroy();
         }
+	clearFrontCanvas();
     },
     fT: function() {
         delete this.fTid;
