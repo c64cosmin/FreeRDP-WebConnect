@@ -399,6 +399,7 @@ wsgate.RDP = new Class( {
                         this.bctx.putImageData(outB, 0, 0, 0, 0, dw, dh);
                         this.cctx.drawImage(this.bstore, 0, 0, dw, dh, x, y, dw, dh);
                     }
+                    refreshFrontCanvas();
                 } else {
                     this.log.warn('BPP <> 15/16 not yet implemented');
                 }
@@ -478,6 +479,7 @@ wsgate.RDP = new Class( {
                             this.cctx.drawImage(this.bstore, 0, 0, w, h, x, y, w, h);
                         }
                     }
+                    refreshFrontCanvas();
                 } else {
                     this.log.warn('ScrBlt: width and/or height is zero');
                 }
@@ -1115,6 +1117,7 @@ wsgate.RDP = new Class( {
                             this.bstore.height=resolution[1];
                             $('textareainput').setStyle('width', resolution[0]+'px');
                             $('textareainput').setStyle('height', resolution[1]+'px');
+                            resizeFrontCanvas();
                             break;
                     case 'C:':
                             var msg = evt.data.substr(2);
