@@ -43,12 +43,20 @@
             //code for frontcanvas;
             var frontCanvas;
             function resizeFrontCanvas(){
-                frontCanvas.width = window.innerWidth-1;    
-                frontCanvas.height = window.innerHeight-1;    
-                frontCanvas.scale = frontCanvas.height / $("screen").height;
-                frontCanvas.trans = (frontCanvas.width - $("screen").width * frontCanvas.scale)/2;
-                console.log(frontCanvas.trans);
-                frontCanvas.ctx.transform(frontCanvas.scale, 0, 0, frontCanvas.scale, frontCanvas.trans, 0);
+                frontCanvas.scale = window.innerHeight / $("screen").height;
+                frontCanvas.width = $("screen").width * frontCanvas.scale;
+                frontCanvas.height = window.innerHeight;
+                frontCanvas.trans = (window.innerWidth - $("screen").width * frontCanvas.scale)/2;
+                frontCanvas.setStyle("left", frontCanvas.trans + "px");
+                frontCanvas.setStyle("top", "0px");
+                frontCanvas.ctx.transform(frontCanvas.scale, 0, 0, frontCanvas.scale, 0, 0);
+                var textAreaInput = $("textareainput");
+                if(textAreaInput != null){
+                    textAreaInput.setStyle("left", frontCanvas.trans + "px");
+                    textAreaInput.setStyle("top", "0px");
+                    textAreaInput.setStyle("width", $("screen").width * frontCanvas.scale);
+                    textAreaInput.setStyle("height", $("screen").height * frontCanvas.scale);
+                }
                 refreshFrontCanvas();
             }
             function refreshFrontCanvas(){

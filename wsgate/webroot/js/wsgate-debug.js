@@ -258,6 +258,9 @@ wsgate.RDP = new Class( {
         this.textAreaInput.setStyle('opacity', 0);
         this.textAreaInput.setStyle('resize', 'none');
         this.textAreaInput.setStyle('cursor', 'default');
+        this.textAreaInput.setStyle('padding', '0');
+        this.textAreaInput.setStyle('margin', '0');
+        this.textAreaInput.setStyle('border', '0');
         canvas.setStyle('cursor', 'none');
 
         this.textAreaInput.setPosition(pos);
