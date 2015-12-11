@@ -789,6 +789,8 @@ wsgate.RDP = new Class( {
         evt.preventDefault();
         x = (this.msie > 0 || this.trident > 0) ? evt.event.layerX - evt.event.currentTarget.offsetLeft : evt.event.layerX;
         y = (this.msie > 0 || this.trident > 0) ? evt.event.layerY - evt.event.currentTarget.offsetTop : evt.event.layerY;
+        x = x / frontCanvas.scale;
+        y = y / frontCanvas.scale;
         if (!this.cssC) {
             this.mX = x;
             this.mY = y;
@@ -819,6 +821,8 @@ wsgate.RDP = new Class( {
             }
             x = (this.msie > 0 || this.trident > 0) ? evt.event.layerX - evt.event.currentTarget.offsetLeft : evt.event.layerX;
             y = (this.msie > 0 || this.trident > 0) ? evt.event.layerY - evt.event.currentTarget.offsetTop : evt.event.layerY;
+            x = x / frontCanvas.scale;
+            y = y / frontCanvas.scale;
             which = this._mB(evt);
             this.log.debug('mD b: ', which, ' x: ', x, ' y: ', y);
             if (this.sock.readyState == this.sock.OPEN) {
@@ -842,6 +846,8 @@ wsgate.RDP = new Class( {
             evt.preventDefault();
             x = (this.msie > 0 || this.trident > 0) ? evt.event.layerX - evt.event.currentTarget.offsetLeft : evt.event.layerX;
             y = (this.msie > 0 || this.trident > 0) ? evt.event.layerY - evt.event.currentTarget.offsetTop : evt.event.layerY;
+            x = x / frontCanvas.scale;
+            y = y / frontCanvas.scale;
             which = this._mB(evt);
             this.log.debug('mU b: ', which, ' x: ', x, ' y: ', y);
             if (this.aMF) {
@@ -867,7 +873,8 @@ wsgate.RDP = new Class( {
         evt.preventDefault();
         x = (this.msie > 0 || this.trident > 0) ? evt.event.layerX - evt.event.currentTarget.offsetLeft : evt.event.layerX;
         y = (this.msie > 0 || this.trident > 0) ? evt.event.layerY - evt.event.currentTarget.offsetTop : evt.event.layerY;
-        // this.log.debug('mW d: ', evt.wheel, ' x: ', x, ' y: ', y);
+        x = x / frontCanvas.scale;
+        y = y / frontCanvas.scale;
         if (this.sock.readyState == this.sock.OPEN) {
             buf = new ArrayBuffer(16);
             a = new Uint32Array(buf);
@@ -891,6 +898,8 @@ wsgate.RDP = new Class( {
            if(this.mouseDownStatus[button]){
                var x = (this.msie > 0 || this.trident > 0) ? evt.event.layerX - evt.event.currentTarget.offsetLeft : evt.event.layerX;
                var y = (this.msie > 0 || this.trident > 0) ? evt.event.layerY - evt.event.currentTarget.offsetTop : evt.event.layerY;
+               x = x / frontCanvas.scale;
+               y = y / frontCanvas.scale;
                var maxX = $('textareainput').getStyle('width').toInt();
                var maxY = $('textareainput').getStyle('height').toInt();
                if (x < 0) x = 0;
