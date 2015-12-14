@@ -11,13 +11,11 @@
         <meta name="cursor-event-mode" content="native">
         <meta name="touch-event-mode" content="pure-with-mouse-conversion">
         <link rel="stylesheet" href="css/style%JSDEBUG%.css">
-        <link rel="stylesheet" href="css/vkb%JSDEBUG%.css">
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <script src="js/modernizr%JSDEBUG%.js"></script>
         <script src="js/mootools%JSDEBUG%.js"></script>
         <script src="js/simpletabs%JSDEBUG%.js"></script>
         <script src="js/wsgate%JSDEBUG%.js"></script>
-        <script src="js/vkb%JSDEBUG%.js"></script>
         <!--<script language="javascript" type="text/javascript" src="js/rdpevents%JSDEBUG%.js"></script>-->
         <script language="javascript" type="text/javascript">
             var wsBase = "%WSURI%";
@@ -28,7 +26,6 @@
             var dragY = 0;
             var inDrag = false;
             var rdp = null;
-            var vkbd = null;
             var embedded = false;
 
             var externalConnection = false;
@@ -169,7 +166,7 @@
                 if(!embedded){
                     $('dvLoading').setStyles({'visibility':'visible'});
                 }
-                rdp = new wsgate.RDP(uri, $('screen'), !RIMtablet, RIMtablet, vkbd);
+                rdp = new wsgate.RDP(uri, $('screen'), !RIMtablet, RIMtablet);
 
                 rdp.addEvent('alert', function(msg) {
                     popUpMessage('error', msg, 5);
@@ -198,9 +195,6 @@
                 rdp.addEvent('mouserelease', ResetRdpMouseFlags);
                 rdp.addEvent('touch2', function() {
                     ShowMouseHelper($('mousehelper').hasClass('invisible'));
-                });
-                rdp.addEvent('touch3', function() {
-                    vkbd.toggle();
                 });
                 rdp.addEvent('touch4', function() {
                     if (confirm('Are you sure you want to disconnect?')) {
@@ -448,11 +442,6 @@
                     if(externalConnection == true)
                     {
                         RDPStart();
-                        vkbd = new wsgate.vkbd({
-                            version:false,
-                            sizeswitch:false,
-                            numpadtoggle:false
-                        });
                     }
                     if (wsOK) {
                         if(querystring.length > 2)
@@ -481,11 +470,6 @@
                             $('rdpconnect').addEvent('click', function(){RDPStart();});
                             showDialog(true);
                         }
-                        vkbd = new wsgate.vkbd({
-                            version:false,
-                            sizeswitch:false,
-                            numpadtoggle:false
-                        });
                     } else {
                         alert('Sorry!\nYour Browser (' + Browser.name + ' ' + Browser.version
                                 + ') does not yet\nprovide the required HTML5 features '

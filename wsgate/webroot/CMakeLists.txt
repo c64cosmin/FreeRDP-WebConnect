@@ -6,14 +6,14 @@ if(MSVC)
 	set(ENV{VS_UNICODE_OUTPUT} "")
 endif()
 # define js files
-set(JS_FILES modernizr-debug.js mootools-debug.js simpletabs-debug.js vkb-debug.js wsgate-debug.js)
+set(JS_FILES modernizr-debug.js mootools-debug.js simpletabs-debug.js wsgate-debug.js)
 set(JS_STRIPPED_FILES)
 
 # create destionation dir for js files
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/js)
 
 # define css files
-set(CSS_FILES style-debug.css vkb-debug.css)
+set(CSS_FILES style-debug.css)
 set(CSS_STRIPPED_FILES)
 
 # create destionation dir for css files

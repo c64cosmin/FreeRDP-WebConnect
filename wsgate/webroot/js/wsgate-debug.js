@@ -140,7 +140,7 @@ wsgate.WSrunner = new Class( {
 
 wsgate.RDP = new Class( {
     Extends: wsgate.WSrunner,
-    initialize: function(url, canvas, cssCursor, useTouch, vkbd) {
+    initialize: function(url, canvas, cssCursor, useTouch) {
         this.log = new wsgate.Log();
         this.canvas = canvas;
         this.cctx = canvas.getContext('2d');
@@ -179,9 +179,6 @@ wsgate.RDP = new Class( {
                 'top': this.mY - this.chy
                 }
             }).inject(document.body);
-        }
-        if (vkbd) {
-            vkbd.addEvent('vkpress', this.onKv.bind(this));
         }
         //browser identiying variables
         this.msie = window.navigator.userAgent.indexOf('MSIE ');
@@ -1038,38 +1035,6 @@ wsgate.RDP = new Class( {
             a[2] = evt.code;
             this.sock.send(buf);
         }
-    },
-    /**
-     * Event handler for virtual keyboard
-     */
-    onKv: function(evt) {
-        var a, buf;
-        if (this.sock.readyState == this.sock.OPEN) {
-            // this.log.debug('kP code: ', evt.code);
-            buf = new ArrayBuffer(12);
-            a = new Uint32Array(buf);
-            if (evt.special) {
-                a[0] = 1; // WSOP_CS_KUPDOWN
-                a[1] = 1; // down
-                a[2] = evt.code;
-                this.sock.send(buf);
-                a[0] = 1; // WSOP_CS_KUPDOWN
-                a[1] = 0; // up
-                a[2] = evt.code;
-            } else {
-                a[0] = 2; // WSOP_CS_KPRESS
-                a[1] = (evt.shift ? 1 : 0)|(evt.control ? 2 : 0)|(evt.alt ? 4 : 0)|(evt.meta ? 8 : 0);
-                a[2] = evt.code;
-            }
-            this.sock.send(buf);
-        }
-    },
-    /**
-     * Event handler for key pressed events
-     Obsv: not used anymore. Will be removed after checking it's dependants. 
-     */
-    onKp: function(evt) {
-	    return;
     },
     /**
      * Event handler for WebSocket RX events
