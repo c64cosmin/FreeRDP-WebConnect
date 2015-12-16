@@ -8,7 +8,6 @@ var LoginMenu = function(){
     this.xTarget = 0;
     this.x = 0;
     this.y = window.innerHeight*(1.0 - this.height)*0.5;
-    this.buttonHeight = 30;
     this.logoHeight = 80;
     this.state = "center";
     this.elem.style["position"] = "absolute";
@@ -18,12 +17,20 @@ var LoginMenu = function(){
     this.elem.style["top"] = this.y + "px";
     this.elem.style["overflow"] = "hidden";
     this.logo = new Logo(this.elem, this.logoHeight);
-    this.entries = [];
-    this.entries.push(new TextEntry(this.elem, "test0", "Woot"));
-    this.entries.push(new TextEntry(this.elem, "test1", "Woot"));
+    this.menu1 = [];
+    this.menu1.buttonHeightTarget = 30;
+    this.menu1.buttonHeight = 30;
+    this.menu1.push(new TextEntry(this.elem, "test", "Hostname"));
+    this.menu1.push(new TextEntry(this.elem, "test", "User"));
+    this.menu1.push(new TextEntry(this.elem, "test", "Password"));
+    this.menu2 = [];
+    this.menu2.buttonHeightTarget = 30;
+    this.menu2.buttonHeight = 30;
+    this.menu2.push(new TextEntry(this.elem, "test", "Port"));
+    this.menu2.push(new TextEntry(this.elem, "test", "PCB (vmID)"));
     this.update = function(){
         if(this.state == "center"){
-            this.heightTarget = (this.logoHeight + this.entries.length * this.buttonHeight) / window.innerHeight;
+            this.heightTarget = (this.logoHeight + this.menu1.length * this.menu1.buttonHeight + this.menu2.length * this.menu2.buttonHeight) / window.innerHeight;
             this.xTarget = window.innerWidth * (1-this.width) * 0.5;
         }
         if(this.state == "left"){
@@ -41,8 +48,13 @@ var LoginMenu = function(){
         this.elem.style["height"] = window.innerHeight * this.height + "px";
         this.elem.style["left"] = this.x + "px";
         this.elem.style["top"] = this.y + "px";
-        for(var i=0;i<this.entries.length;i++){
-            this.entries[i].update(this.buttonHeight);
+	this.menu1.buttonHeight += (this.menu1.buttonHeightTarget - this.menu1.buttonHeight) * 0.1;
+	this.menu2.buttonHeight += (this.menu2.buttonHeightTarget - this.menu2.buttonHeight) * 0.1;
+        for(var i=0;i<this.menu1.length;i++){
+            this.menu1[i].update(this.menu1.buttonHeight);
+        }
+        for(var i=0;i<this.menu2.length;i++){
+            this.menu2[i].update(this.menu2.buttonHeight);
         }
     }
 }
@@ -78,7 +90,7 @@ var TextEntry = function(parent, id, caption){
         this.captionElem = document.createElement("div");
         this.elem.appendChild(this.captionElem);
         this.captionElem.style["position"] = "relative";
-        this.captionElem.style["width"] = "25%";
+        this.captionElem.style["width"] = "30%";
         this.captionElem.style["height"] = "100%";
         this.captionElem.style["display"] = "table";
         this.captionElem.style["float"] = "left";
@@ -89,7 +101,7 @@ var TextEntry = function(parent, id, caption){
         this.elem.appendChild(this.textAreaElem);
         this.textAreaElem.style["position"] = "relative";
         this.textAreaElem.style["position"] = "relative";
-        this.textAreaElem.style["width"] = "75%";
+        this.textAreaElem.style["width"] = "70%";
         this.textAreaElem.style["height"] = "100%";
         this.textAreaElem.style["float"] = "right";
         this.textAreaElem.innerHTML = "<input id='" + this.id + "' style='width:100%;height:100%;resize:none;margin:1px;float:right;'></input>";
