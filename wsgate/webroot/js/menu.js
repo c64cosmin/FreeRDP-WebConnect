@@ -9,6 +9,7 @@ var LoginMenu = function(){
     this.x = 0;
     this.y = window.innerHeight*(1.0 - this.height)*0.5;
     this.buttonHeight = 30;
+    this.logoHeight = 80;
     this.state = "center";
     this.elem.style["position"] = "absolute";
     this.elem.style["width"] = window.innerWidth * this.width + "px";
@@ -16,12 +17,13 @@ var LoginMenu = function(){
     this.elem.style["left"] = this.x + "px";
     this.elem.style["top"] = this.y + "px";
     this.elem.style["overflow"] = "hidden";
+    this.logo = new Logo(this.elem, this.logoHeight);
     this.entries = [];
     this.entries.push(new TextEntry(this.elem, "test0", "Woot"));
     this.entries.push(new TextEntry(this.elem, "test1", "Woot"));
     this.update = function(){
         if(this.state == "center"){
-            this.heightTarget = (this.entries.length * this.buttonHeight) / window.innerHeight;
+            this.heightTarget = (this.logoHeight + this.entries.length * this.buttonHeight) / window.innerHeight;
             this.xTarget = window.innerWidth * (1-this.width) * 0.5;
         }
         if(this.state == "left"){
@@ -43,6 +45,17 @@ var LoginMenu = function(){
             this.entries[i].update(this.buttonHeight);
         }
     }
+}
+
+var Logo = function(parent, height){
+    this.elem = document.createElement("div");
+    parent.appendChild(this.elem);
+    this.elem.style["position"] = "relative";
+    this.elem.style["width"] = "100%";
+    this.elem.style["height"] = height + "px";
+    this.elem.style["background-image"] = "url('http://cloudbase.it/wp-content/uploads/2012/10/CBSL_web_logo3.png')";
+    this.elem.style["background-size"] = "contain";
+    this.elem.style["background-repeat"] = "no-repeat";
 }
 
 var TextEntry = function(parent, id, caption){
