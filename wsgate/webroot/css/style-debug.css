@@ -506,3 +506,7 @@ label.big {
 #loginmenu {
   background-color: rgba(52,66,95,255);
 }
+
+.textareacaption {
+  color: rgb(200,200,255);
+}
