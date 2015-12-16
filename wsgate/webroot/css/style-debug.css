@@ -499,3 +499,10 @@ label.big {
   font-family: sans-serif;
   text-align: center;
 }
+
+/* Login menu
+ */
+
+#loginmenu {
+  background-color: rgba(52,66,95,255);
+}

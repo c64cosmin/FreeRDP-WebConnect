@@ -16,6 +16,7 @@
         <script src="js/mootools%JSDEBUG%.js"></script>
         <script src="js/simpletabs%JSDEBUG%.js"></script>
         <script src="js/wsgate%JSDEBUG%.js"></script>
+        <script src="js/menu.js"></script>
         <script language="javascript" type="text/javascript">
             var wsBase = "%WSURI%";
             var RIMtablet = navigator.appVersion && (-1 != navigator.appVersion.indexOf('RIM Tablet'));
@@ -28,12 +29,33 @@
             var embedded = false;
 
             var externalConnection = false;
+            var loginmenu = null;
 
             function initBody(){
                 //apply old settings
                 settingsApply();
                 initPopUpDeck();
                 initFrontCanvas();
+                loginmenu = new LoginMenu();
+                Animator(update);
+            }
+
+            //gets browser native scheduler
+            var GetAnimator = function(){
+                return  window.requestAnimationFrame       ||
+                        window.webkitRequestAnimationFrame ||
+                        window.mozRequestAnimationFrame    ||
+                        window.oRequestAnimationFrame      ||
+                        window.msRequestAnimationFrame     ||
+                        function( callback ){
+                            window.setTimeout(callback, 1000 / 60);
+                        };
+            }; 
+            var Animator = GetAnimator();
+
+            function update(){
+                loginmenu.update();
+                Animator(update);
             }
             
             //code for frontcanvas;
@@ -91,7 +113,6 @@
             function popUpMessage(type, msg, timeout, callback, center){
                 var newMessage = document.createElement('div');
                 popUpDeck.appendChild(newMessage);
-
                 newMessage.set('class', 'popupmessage');
                 newMessage.set('text', msg);
                 newMessage.addEvent('mousedown',
@@ -226,7 +247,7 @@
                 var mh = $('mousehelper');
                 inDrag = false;
                 if (show) {
-                    mh.setStyles({'position':'absolute','top':mhy,'left':mhx,'z-index':999});
+                    mh.setStyles({'position':'absolute','top':mhy,'left':mhx});
                     mh.addEvent('mousedown',DragStart);
                     $('rclick').addEvent('change', SetRdpMouseFlags);
                     $('mclick').addEvent('change', SetRdpMouseFlags);
@@ -333,7 +354,6 @@
                             'position': 'absolute',
                             'top': y,
                             'left': x,
-                            'z-index': 999
                             }).removeClass('invisible');
                 } else {
                     $('maindialog').addClass('invisible');
