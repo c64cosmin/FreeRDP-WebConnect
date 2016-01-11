@@ -4,7 +4,7 @@ var LoginMenu = function(){
     this.elem.id = "loginmenu";
     this.heightTarget = 1;
     this.height = 0;
-    this.width = 0.15;
+    this.width = 300;
     this.xTarget = 0;
     this.x = 0;
     this.y = 0;
@@ -33,7 +33,7 @@ var LoginMenu = function(){
         if(this.state == "center"){
             //we add 1px for the bottom margin
             this.heightTarget = (this.logo.height + this.menu1.height + this.menu2.height + this.connect.height + 1) / window.innerHeight;
-            this.xTarget = window.innerWidth * (1-this.width) * 0.5;
+            this.xTarget = (window.innerWidth - this.width) * 0.5;
         }
         if(this.state == "left"){
             this.heightTarget = 1;
@@ -41,12 +41,12 @@ var LoginMenu = function(){
         }
         if(this.state == "right"){
             this.heightTarget = 1;
-            this.xTarget = window.innerWidth * (1-this.width);
+            this.xTarget = (window.innerWidth - this.width);
         }
         this.height += (this.heightTarget - this.height)*0.2;
         this.x += (this.xTarget - this.x)*0.1;
         this.y = window.innerHeight*(1.0 - this.height)*0.5;
-        this.elem.style["width"] = window.innerWidth * this.width + "px";
+        this.elem.style["width"] = this.width + "px";
         this.elem.style["height"] = window.innerHeight * this.height + "px";
         this.elem.style["left"] = this.x + "px";
         this.elem.style["top"] = this.y + "px";
