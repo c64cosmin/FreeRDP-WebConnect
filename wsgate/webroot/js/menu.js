@@ -17,16 +17,22 @@ var LoginMenu = function(){
     this.elem.style["overflow"] = "hidden";
     this.logo = new Logo(this.elem, this.logoHeight);
     this.menu1 = new Group();
+    this.menu1.push(new Button(this.elem, "RDP session parameters", function(){}, 20));
     this.menu1.push(new TextEntry(this.elem, "test", "Hostname"));
     this.menu1.push(new TextEntry(this.elem, "test", "User"));
     this.menu1.push(new TextEntry(this.elem, "test", "Password"));
-    this.menu2 = new Group();
+    var menu2 = this.menu2 = new Group();
     this.menu2.push(new TextEntry(this.elem, "test", "Port"));
     this.menu2.push(new TextEntry(this.elem, "test", "PCB (vmID)"));
+    this.menu2.hide();
+    this.connect = new Button(this.elem, "Connect", function(){}, 30);
+    //add the advanced button, show the advanced menu and hide the button
+    this.menu1.push(new Button(this.elem, "Advanced", function(){menu2.show();this.hide();}, 20));
+
     this.update = function(){
         if(this.state == "center"){
             //we add 1px for the bottom margin
-            this.heightTarget = (this.logo.height + this.menu1.height + this.menu2.height + 1) / window.innerHeight;
+            this.heightTarget = (this.logo.height + this.menu1.height + this.menu2.height + this.connect.height + 1) / window.innerHeight;
             this.xTarget = window.innerWidth * (1-this.width) * 0.5;
         }
         if(this.state == "left"){
@@ -37,7 +43,7 @@ var LoginMenu = function(){
             this.heightTarget = 1;
             this.xTarget = window.innerWidth * (1-this.width);
         }
-        this.height += (this.heightTarget - this.height)*0.1;
+        this.height += (this.heightTarget - this.height)*0.2;
         this.x += (this.xTarget - this.x)*0.1;
         this.y = window.innerHeight*(1.0 - this.height)*0.5;
         this.elem.style["width"] = window.innerWidth * this.width + "px";
@@ -46,12 +52,14 @@ var LoginMenu = function(){
         this.elem.style["top"] = this.y + "px";
         this.menu1.update();
         this.menu2.update();
+        this.connect.update();
     }
 }
 
 var Group = function(){
     this.elements = [];
     this.height = 0;
+    this.state = "hide";
     this.update = function(){
         this.height = 0;
         for(var i=0;i<this.elements.length;i++){
@@ -72,6 +80,47 @@ var Group = function(){
     this.push = function(elem){
         this.elements.push(elem);
     }
+}
+
+var Button = function(parent, caption, callback, height){
+    this.elem = document.createElement("div");
+    parent.appendChild(this.elem);
+    this.heightExpanded = height;
+    this.heightTarget = this.heightExpanded;
+    this.height = 0;
+    this.caption = caption;
+    this.callback = callback;
+    this.elem.style["position"] = "relative";
+    this.elem.style["width"] = "100%";
+    this.elem.style["height"] = "0px";
+    this.elem.style["overflow"] = "hidden";
+    this.elem.style["display"] = "table";
+    this.elem.style["cursor"] = "pointer";
+    this.elem.className = "button";
+    this.elem.innerHTML = "<p class='textareacaption' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
+    this.update = function(){
+        //we need an extra pixel so the element has a bottom edge of 2px height
+        this.height += ((this.heightTarget + 2) - this.height)*0.1;
+        this.elem.style["height"] = this.height + "px";
+    }
+    this.show = function(){
+        this.heightTarget = this.heightExpanded;
+    }
+    this.hide = function(){
+        this.heightTarget = -2;
+    }
+    this.click = function(){
+        if(this.state == "inflate"){
+            this.state = "deflate";
+            this.group.hide();
+        }
+        else{
+            this.state = "inflate";
+            this.group.show();
+        }
+    }
+    var s = this;
+    this.elem.addEventListener("click", function(){s.callback();}); 
 }
 
 var Logo = function(parent){
@@ -100,14 +149,14 @@ var TextEntry = function(parent, id, caption){
     this.elem.className = "textentry";
     this.update = function(){
         //we need an extra pixel so the element has a bottom edge of 2px height
-        this.height += (this.heightTarget - (this.height + 2))*0.1;
+        this.height += ((this.heightTarget + 2) - this.height)*0.1;
         this.elem.style["height"] = this.height + "px";
     }
     this.show = function(){
         this.heightTarget = this.heightExpanded;
     }
     this.hide = function(){
-        this.heightTarget = 0;
+        this.heightTarget = -2;
     }
     this.createCaption = function(){
         this.captionElem = document.createElement("div");
