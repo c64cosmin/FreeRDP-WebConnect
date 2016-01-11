@@ -17,17 +17,20 @@ var LoginMenu = function(){
     this.elem.style["overflow"] = "hidden";
     this.logo = new Logo(this.elem, this.logoHeight);
     this.menu1 = new Group();
-    this.menu1.push(new Button(this.elem, "RDP session parameters", function(){}, 20));
+    this.menu1.push(new Button(this.elem, "RDP session parameters", 20));
     this.menu1.push(new TextEntry(this.elem, "test", "Hostname"));
     this.menu1.push(new TextEntry(this.elem, "test", "User"));
     this.menu1.push(new TextEntry(this.elem, "test", "Password"));
-    var menu2 = this.menu2 = new Group();
+    this.menu2 = new Group();
     this.menu2.push(new TextEntry(this.elem, "test", "Port"));
     this.menu2.push(new TextEntry(this.elem, "test", "PCB (vmID)"));
     this.menu2.hide();
-    this.connect = new Button(this.elem, "Connect", function(){}, 30);
+    this.connect = new Button(this.elem, "Connect", 30);
     //add the advanced button, show the advanced menu and hide the button
-    this.menu1.push(new Button(this.elem, "Advanced", function(){menu2.show();this.hide();}, 20));
+    var advancedButton = new Button(this.elem, "Advanced", 20);
+    var menu2 = this.menu2;
+    this.menu1.push(advancedButton);
+    advancedButton.setCallback(function(){menu2.show();advancedButton.hide();});
 
     this.update = function(){
         if(this.state == "center"){
@@ -82,22 +85,30 @@ var Group = function(){
     }
 }
 
-var Button = function(parent, caption, callback, height){
+var Button = function(parent, caption, height){
     this.elem = document.createElement("div");
     parent.appendChild(this.elem);
     this.heightExpanded = height;
     this.heightTarget = this.heightExpanded;
     this.height = 0;
     this.caption = caption;
-    this.callback = callback;
     this.elem.style["position"] = "relative";
     this.elem.style["width"] = "100%";
     this.elem.style["height"] = "0px";
     this.elem.style["overflow"] = "hidden";
-    this.elem.style["display"] = "table";
     this.elem.style["cursor"] = "pointer";
     this.elem.className = "button";
-    this.elem.innerHTML = "<p class='textareacaption' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
+    this.createCaption = function(){
+        this.captionElem = document.createElement("div");
+        this.elem.appendChild(this.captionElem);
+        this.captionElem.style["position"] = "relative";
+        this.captionElem.style["width"] = "100%";
+        this.captionElem.style["height"] = "100%";
+        this.captionElem.style["display"] = "table";
+        this.captionElem.style["float"] = "left";
+        this.captionElem.innerHTML = "<p class='textareacaption' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
+    }
+    this.createCaption();
     this.update = function(){
         //we need an extra pixel so the element has a bottom edge of 2px height
         this.height += ((this.heightTarget + 2) - this.height)*0.1;
@@ -109,18 +120,10 @@ var Button = function(parent, caption, callback, height){
     this.hide = function(){
         this.heightTarget = -2;
     }
-    this.click = function(){
-        if(this.state == "inflate"){
-            this.state = "deflate";
-            this.group.hide();
-        }
-        else{
-            this.state = "inflate";
-            this.group.show();
-        }
+    this.setCallback = function(callback){
+        this.callback = callback
+        this.elem.addEventListener("click", callback); 
     }
-    var s = this;
-    this.elem.addEventListener("click", function(){s.callback();}); 
 }
 
 var Logo = function(parent){
