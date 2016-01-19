@@ -17,23 +17,24 @@ var LoginMenu = function(){
     this.elem.style["overflow"] = "hidden";
     this.logo = new Logo(this.elem, this.logoHeight);
     this.menu1 = new Group();
-    this.menu1.push(new Button(this.elem, "RDP session parameters", 20));
-    this.menu1.push(new TextEntry(this.elem, "test", "Hostname"));
-    this.menu1.push(new TextEntry(this.elem, "test", "User"));
-    this.menu1.push(new TextEntry(this.elem, "test", "Password"));
+    this.menu1.push(new Button(this.elem, "button", "RDP session parameters", 20));
+    this.menu1.push(new TextEntry(this.elem, "rdphost", "Hostname"));
+    this.menu1.push(new TextEntry(this.elem, "rdpuser", "User"));
+    this.menu1.push(new TextEntry(this.elem, "rdppass", "Password"));
     this.menu2 = new Group();
-    this.menu2.push(new TextEntry(this.elem, "test", "Port"));
-    this.menu2.push(new TextEntry(this.elem, "test", "PCB (vmID)"));
-    this.menu2.push(new CheckButton(this.elem, "test", "disable NLA"));
-    this.menu2.push(new CheckButton(this.elem, "test", "disable TLS"));
+    this.menu2.push(new TextEntry(this.elem, "rdpport", "Port"));
+    this.menu2.push(new TextEntry(this.elem, "rdppcb", "PCB (vmID)"));
+    this.menu2.push(new CheckButton(this.elem, "nonla", "disable NLA"));
+    this.menu2.push(new CheckButton(this.elem, "notls", "disable TLS"));
     options = {0:"disabled",
                1:"NTLM v1",
                2:"NTLM v2"};
-    this.menu2.push(new MultiSelection(this.elem, "test", "Force NTLM auth", options));
+    this.menu2.push(new MultiSelection(this.elem, "fntlm", "Force NTLM auth", options));
     this.menu2.hide();
-    this.connect = new Button(this.elem, "Connect", 30);
+    //add connect button
+    this.connect = new Button(this.elem, "rdpconnect", "Connect", 30);
     //add the advanced button, show the advanced menu and hide the button
-    var advancedButton = new Button(this.elem, "Advanced", 20);
+    var advancedButton = new Button(this.elem, "advanced", "Advanced", 20);
     var menu2 = this.menu2;
     this.menu1.push(advancedButton);
     advancedButton.setCallback(function(){menu2.show();advancedButton.hide();});
@@ -91,9 +92,10 @@ var Group = function(){
     }
 }
 
-var Button = function(parent, caption, height){
+var Button = function(parent, id, caption, height){
     this.elem = document.createElement("div");
     parent.appendChild(this.elem);
+    this.elem.id = id;
     this.heightExpanded = height;
     this.heightTarget = this.heightExpanded;
     this.height = 0;
