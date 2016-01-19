@@ -302,18 +302,6 @@
                 }
             }
 
-            function DrawLogo() {
-                    var logo = new Element('img', {'src': 'empty_on_purpose'});
-                    logo.addEvent('load', function() {
-                var scaleWCoeficient = 0.5;
-                var scaleHCoeficient = 0.5;
-                            var iw = this.width * scaleWCoeficient;
-                            var ih = this.height * scaleHCoeficient;
-                            var scale = ($('screen').height - 20) / ih;
-                            $('screen').getContext('2d').drawImage(this, 10, 10, Math.round(iw * scale), Math.round(ih * scale));
-                    }.bind(logo));
-            }
-
 	    var sendDisconnect = function() {
 		if (confirm('Are you sure you want to disconnect ?')) {
 		    $('extracommands').setStyles({'visibility':'hidden'});
@@ -337,10 +325,7 @@
 
             function showDialog(show) {
                 if (show) {
-                    ShowMouseHelper(false);
-                    var dlg = $('maindialog');
-                    var x = Math.round((window.getCoordinates().width - dlg.getCoordinates().width) / 2) + 'px';
-                    var y = Math.round((window.getCoordinates().height - dlg.getCoordinates().height) / 2) + 'px';
+                    loginmenu.state = "center";
                     $('extracommands').setStyles(
                     {
                         'visibility':'hidden'
@@ -349,14 +334,8 @@
                     {
                         'visibility':'hidden'
                     });
-                    DrawLogo();
-                    dlg.setStyles({
-                            'position': 'absolute',
-                            'top': y,
-                            'left': x,
-                            }).removeClass('invisible');
                 } else {
-                    $('maindialog').addClass('invisible');
+                    loginmenu.state = "left";
                     $('extracommands').setStyles(
                     {
                         'visibility':'visible'
@@ -431,7 +410,6 @@
 
                     var querystring = window.location.href.slice(window.location.href.indexOf('?'))
 
-                    var tabs = new SimpleTabs('rdpdialog',{selector:'h4'});
                     if (RIMtablet) {
                         // Set default performance flags to modem
                         $('perf').value = '2';

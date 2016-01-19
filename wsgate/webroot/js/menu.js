@@ -22,6 +22,10 @@ var LoginMenu = function(){
     this.menu1.push(new TextEntry(this.elem, "rdpuser", "User"));
     this.menu1.push(new TextEntry(this.elem, "rdppass", "Password"));
     this.menu2 = new Group();
+    options = {0:"LAN",
+               1:"Broadband",
+               2:"Modem"};
+    this.menu2.push(new MultiSelection(this.elem, "perf", "Performance", options));
     this.menu2.push(new TextEntry(this.elem, "rdpport", "Port"));
     this.menu2.push(new TextEntry(this.elem, "rdppcb", "PCB (vmID)"));
     this.menu2.push(new CheckButton(this.elem, "nonla", "disable NLA"));
