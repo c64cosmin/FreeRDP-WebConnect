@@ -209,7 +209,7 @@
                         button = $("rdpconnect");
                         button.removeEvents();
                         button.innerHTML = 'Disconnect';
-                        button.addEvent('click', rdp.Disconnect.bind(rdp));
+                        button.addEvent('click', sendDisconnect);
                         window.addEvent("beforeunload", rdp.Disconnect.bind(rdp));
                         });
                 rdp.addEvent('disconnected', function() {
@@ -311,11 +311,10 @@
                 }
             }
 
-	    var sendDisconnect = function() {
-		if (confirm('Are you sure you want to disconnect ?')) {
-		    $('extracommands').setStyles({'visibility':'hidden'});
-		    rdp.Disconnect();
-		}
+            var sendDisconnect = function() {
+                if (confirm('Are you sure you want to disconnect ?')) {
+                    rdp.Disconnect();
+                }
             }
 
             var altTabOn = false;
@@ -334,24 +333,17 @@
 
             function showDialog(show) {
                 if (show) {
+                    loginmenu.menu3.hide();
                     loginmenu.state = "center";
-                    $('extracommands').setStyles(
-                    {
-                        'visibility':'hidden'
-                    });
                     $('dvLoading').setStyles(
                     {
                         'visibility':'hidden'
                     });
                 } else {
+                    loginmenu.menu3.show();
                     loginmenu.state = "left";
-                    $('extracommands').setStyles(
-                    {
-                        'visibility':'visible'
-                    });
                     $('ctrlaltdelete').addEvent('click', function(){ rdp.SendKey(0); });
                     $('alttab').addEvent('click', altTabEvent);
-                    $('disconnect').addEvent('click', sendDisconnect);
                 }
             }
 
@@ -441,7 +433,6 @@
                         {
                             showDialog(false);
                             if (querystring.indexOf('token=')>=0){
-                                $('disconnect').setStyles({'visibility':'hidden'});
                                 embedded = true;
                             }
                             var urlParams;
@@ -472,22 +463,6 @@
         </script>
     </head>
     <body id="wrapper" onload="initBody()" style="overflow:hidden;">
-        <div id="extracommands" style="position:absolute; height:28px; background-color:#f1f1f1; padding-left:25px; cursor:default; visibility:hidden;">
-            Send keys:
-            <ul>
-
-                <li id="ctrlaltdelete">
-                    Ctrl+Alt+Delete
-                </li>
-                <li id="alttab">
-                    Alt+Tab
-                </li>
-                <li id="keyboardlanguage">
-                    Multilanguage keyboard
-                </li>
-            </ul>
-            <button id="disconnect" type="button" style="float:right; margin-right:40px; margin-top:2px">Disconnect</button>
-        </div>
         <div id="IMEhelper" style="z-index:1111;visibility:hidden;height:auto;width:auto;display:inline;position:absolute;background-color:#ffffff;"></div>
         <canvas id="screen" style="position:absolute;visibility:hidden;margin:0;border:0">
         </canvas>

@@ -37,18 +37,29 @@ var LoginMenu = function(){
                2:"NTLM v2"};
     this.menu2.push(new MultiSelection(this.elem, "fntlm", "Force NTLM auth", options));
     this.menu2.hide();
+    //helper buttons
+    this.menu3 = new Group();
+    this.menu3.push(new Button(this.elem, "ctrlaltdelete", "Ctrl+Alt+Del", 30));
+    this.menu3.push(new Button(this.elem, "alttab", "Alt+Tab", 30));
+    this.menu3.push(new Button(this.elem, "keyboardlanguage", "Multilanguage keyboard", 30));
+    this.menu3.hide();
     //add connect button
     this.connect = new Button(this.elem, "rdpconnect", "Connect", 30);
     //add the advanced button, show the advanced menu and hide the button
     var advancedButton = new Button(this.elem, "advanced", "Advanced", 20);
     var menu2 = this.menu2;
     this.menu1.push(advancedButton);
-    advancedButton.setCallback(function(){menu2.show();advancedButton.hide();});
+    advancedButton.setCallback(function(){
+        if(menu2.state == "hide")
+            menu2.show();
+        else
+            menu2.hide();
+    });
 
     this.update = function(){
         if(this.state == "center"){
             //we add 1px for the bottom margin
-            this.heightTarget = (this.logo.height + this.menu1.height + this.menu2.height + this.connect.height + 1) / window.innerHeight;
+            this.heightTarget = (this.logo.height + this.menu1.height + this.menu2.height + this.menu3.height + this.connect.height + 1) / window.innerHeight;
             this.xTarget = (window.innerWidth - this.width) * 0.5;
             this.counter = 0;
         }
@@ -85,6 +96,7 @@ var LoginMenu = function(){
         this.elem.style["top"] = this.y + "px";
         this.menu1.update();
         this.menu2.update();
+        this.menu3.update();
         this.connect.update();
     }
 }
@@ -101,11 +113,13 @@ var Group = function(){
         }
     }
     this.show = function(){
+        this.state = "show";
         for(var i=0;i<this.elements.length;i++){
             this.elements[i].show();
         }
     }
     this.hide = function(){
+        this.state = "hide";
         for(var i=0;i<this.elements.length;i++){
             this.elements[i].hide();
         }
