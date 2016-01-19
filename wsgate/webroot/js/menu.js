@@ -100,7 +100,7 @@ var Group = function(){
 var Button = function(parent, id, caption, height){
     this.elem = document.createElement("div");
     parent.appendChild(this.elem);
-    this.elem.id = id;
+    this.id = id;
     this.heightExpanded = height;
     this.heightTarget = this.heightExpanded;
     this.height = 0;
@@ -119,7 +119,7 @@ var Button = function(parent, id, caption, height){
         this.captionElem.style["height"] = "100%";
         this.captionElem.style["display"] = "table";
         this.captionElem.style["float"] = "left";
-        this.captionElem.innerHTML = "<p class='textareacaption' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
+        this.captionElem.innerHTML = "<p class='textareacaption' id='" + this.id + "' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
     }
     this.createCaption();
     this.update = function(){
