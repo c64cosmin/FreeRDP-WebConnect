@@ -8,6 +8,7 @@ var LoginMenu = function(){
     this.xTarget = 0;
     this.x = 0;
     this.y = 0;
+    this.counter = 0;
     this.state = "center";
     this.elem.style["position"] = "absolute";
     this.elem.style["width"] = window.innerWidth * this.width + "px";
@@ -49,14 +50,31 @@ var LoginMenu = function(){
             //we add 1px for the bottom margin
             this.heightTarget = (this.logo.height + this.menu1.height + this.menu2.height + this.connect.height + 1) / window.innerHeight;
             this.xTarget = (window.innerWidth - this.width) * 0.5;
+            this.counter = 0;
         }
         if(this.state == "left"){
             this.heightTarget = 1;
             this.xTarget = 0;
+            this.counter++;
+            if(this.counter==200){
+                this.state="hideleft";
+                this.counter=0;
+            }
         }
         if(this.state == "right"){
             this.heightTarget = 1;
             this.xTarget = (window.innerWidth - this.width);
+        }
+        if(this.state == "hideleft"){
+            this.heightTarget = 1;
+            this.xTarget = -this.width;
+            if(mouseX < 1){
+                this.counter++;
+            }
+            if(this.counter > 60){
+                this.state = "left";
+                this.counter = 0;
+            }
         }
         this.height += (this.heightTarget - this.height)*0.2;
         this.x += (this.xTarget - this.x)*0.1;

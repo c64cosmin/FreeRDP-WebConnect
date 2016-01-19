@@ -30,9 +30,16 @@
 
             var externalConnection = false;
             var loginmenu = null;
+            
+            var mouseX = 0;
+            var mouseY = 0;
 
             function initBody(){
                 //apply old settings
+                document.body.onmousemove = function(evt){
+                    mouseX = evt.clientX;
+                    mouseY = evt.clientY;
+                }
                 loginmenu = new LoginMenu();
                 settingsApply();
                 initPopUpDeck();
@@ -56,6 +63,7 @@
 
             function update(){
                 loginmenu.update();
+                resizeFrontCanvas();
                 Animator(update);
             }
             
@@ -66,6 +74,8 @@
                 frontCanvas.width = $("screen").width * frontCanvas.scale;
                 frontCanvas.height = window.innerHeight;
                 frontCanvas.trans = (window.innerWidth - frontCanvas.width)/2;
+                if(frontCanvas.trans < loginmenu.x + loginmenu.width)
+                    frontCanvas.trans = loginmenu.x + loginmenu.width;
                 frontCanvas.setStyle("left", frontCanvas.trans + "px");
                 frontCanvas.setStyle("top", "0px");
                 frontCanvas.ctx.transform(frontCanvas.scale, 0, 0, frontCanvas.scale, 0, 0);
