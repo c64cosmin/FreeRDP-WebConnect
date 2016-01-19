@@ -66,8 +66,13 @@ var LoginMenu = function(){
         if(this.state == "left"){
             this.heightTarget = 1;
             this.xTarget = 0;
-            this.counter++;
-            if(this.counter==200){
+            if(mouseX > this.width){
+                this.counter++;
+            }
+            else{
+                this.counter = 0;
+            }
+            if(this.counter==100){
                 this.state="hideleft";
                 this.counter=0;
             }
@@ -82,7 +87,7 @@ var LoginMenu = function(){
             if(mouseX < 1){
                 this.counter++;
             }
-            if(this.counter > 60){
+            if(this.counter > 40){
                 this.state = "left";
                 this.counter = 0;
             }
