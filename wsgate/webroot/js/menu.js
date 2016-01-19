@@ -24,6 +24,8 @@ var LoginMenu = function(){
     this.menu2 = new Group();
     this.menu2.push(new TextEntry(this.elem, "test", "Port"));
     this.menu2.push(new TextEntry(this.elem, "test", "PCB (vmID)"));
+    this.menu2.push(new CheckButton(this.elem, "test", "disable NLA"));
+    this.menu2.push(new CheckButton(this.elem, "test", "disable TLS"));
     this.menu2.hide();
     this.connect = new Button(this.elem, "Connect", 30);
     //add the advanced button, show the advanced menu and hide the button
@@ -176,11 +178,58 @@ var TextEntry = function(parent, id, caption){
         this.textAreaElem = document.createElement("div");
         this.elem.appendChild(this.textAreaElem);
         this.textAreaElem.style["position"] = "relative";
-        this.textAreaElem.style["position"] = "relative";
         this.textAreaElem.style["width"] = "70%";
         this.textAreaElem.style["height"] = "100%";
         this.textAreaElem.style["float"] = "right";
         this.textAreaElem.innerHTML = "<input id='" + this.id + "' style='width:100%;height:100%;resize:none;margin:1px;float:right;'></input>";
     }
     this.createTextArea();
+}
+
+var CheckButton = function(parent, id, caption){
+    this.elem = document.createElement("div");
+    parent.appendChild(this.elem);
+    this.id = id;
+    this.heightExpanded = 30;
+    this.heightTarget = this.heightExpanded;
+    this.height = 0;
+    this.caption = caption;
+    this.elem.style["position"] = "relative";
+    this.elem.style["width"] = "100%";
+    this.elem.style["overflow"] = "hidden";
+    this.elem.classname = "checkbutton";
+    this.update = function(){
+        //we need an extra pixel so the element has a bottom edge of 2px height
+        this.height += ((this.heightTarget + 2) - this.height)*0.1;
+        this.elem.style["height"] = this.height + "px";
+        this.textAreaElem.style["width"] = (this.height - 1) + "px";
+        this.textAreaElem.style["height"] = (this.height - 1)  + "px";
+    }
+    this.show = function(){
+        this.heightTarget = this.heightExpanded;
+    }
+    this.hide = function(){
+        this.heightTarget = -2;
+    }
+    this.createCaption = function(){
+        this.captionElem = document.createElement("div");
+        this.elem.appendChild(this.captionElem);
+        this.captionElem.style["position"] = "relative";
+        this.captionElem.style["width"] = "50%";
+        this.captionElem.style["height"] = "100%";
+        this.captionElem.style["display"] = "table";
+        this.captionElem.style["float"] = "left";
+        this.captionElem.innerHTML = "<p class='textareacaption' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
+    }
+    this.createCaption();
+    this.createCheckBox = function(){
+        this.textAreaElem = document.createElement("div");
+        this.elem.appendChild(this.textAreaElem);
+        this.textAreaElem.style["position"] = "relative";
+        this.textAreaElem.style["margin-top"] = "1px";
+        this.textAreaElem.style["margin-right"] = "1px";
+        this.textAreaElem.style["float"] = "right";
+        this.textAreaElem.innerHTML = "<input id='" + this.id + "' type='checkbox' style='width:100%;height:100%;resize:none;float:right;'></input>";
+    }
+    this.createCheckBox();
 }
