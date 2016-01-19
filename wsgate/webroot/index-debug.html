@@ -37,6 +37,7 @@
                 settingsApply();
                 initPopUpDeck();
                 initFrontCanvas();
+                initRDP();
                 Animator(update);
             }
 
@@ -406,7 +407,7 @@
                 }
             }, false);
 
-            window.addEvent('domready', function() {
+            var initRDP = function() {
 
                     var querystring = window.location.href.slice(window.location.href.indexOf('?'))
 
@@ -464,7 +465,7 @@
                                 + ') does not yet\nprovide the required HTML5 features '
                                 + 'for this application.\n');
                     }
-            });
+            }
         </script>
     </head>
     <body id="wrapper" onload="initBody()" style="overflow:hidden;">

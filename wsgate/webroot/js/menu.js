@@ -15,6 +15,7 @@ var LoginMenu = function(){
     this.elem.style["left"] = this.x + "px";
     this.elem.style["top"] = this.y + "px";
     this.elem.style["overflow"] = "hidden";
+    this.elem.style["z-index"] = 10;
     this.logo = new Logo(this.elem, this.logoHeight);
     this.menu1 = new Group();
     this.menu1.push(new Button(this.elem, "button", "RDP session parameters", 20));
@@ -261,8 +262,7 @@ var MultiSelection = function(parent, id, caption, options){
         //we need an extra pixel so the element has a bottom edge of 2px height
         this.height += ((this.heightTarget + 2) - this.height)*0.1;
         this.elem.style["height"] = this.height + "px";
-        this.multiAreaElem.style["width"] = "50%";
-        this.multiAreaElem.style["height"] =( this.height-3) + "px";
+        this.multiAreaElem.style["height"] = this.height + "px";
     }
     this.show = function(){
         this.heightTarget = this.heightExpanded;
@@ -286,7 +286,8 @@ var MultiSelection = function(parent, id, caption, options){
         this.elem.appendChild(this.multiAreaElem);
         this.multiAreaElem.style["position"] = "relative";
         this.multiAreaElem.style["float"] = "right";
-        html = "<select id='" + this.id + "' style='height:100%;width:100%;float:right;'>";
+        this.multiAreaElem.style["width"] = "50%";
+        html = "<select id='" + this.id + "' style='height:100%;width:100%;margin-top:1px;margin-right:1px;float:right;'>";
         for(var option in options){
             html += "<option value='" + option + "'>" + options[option] + "</option>";
         }
