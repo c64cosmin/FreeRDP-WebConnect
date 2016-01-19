@@ -21,7 +21,7 @@ var LoginMenu = function(){
     this.menu1.push(new Button(this.elem, "button", "RDP session parameters", 20));
     this.menu1.push(new TextEntry(this.elem, "rdphost", "Hostname"));
     this.menu1.push(new TextEntry(this.elem, "rdpuser", "User"));
-    this.menu1.push(new TextEntry(this.elem, "rdppass", "Password"));
+    this.menu1.push(new TextEntry(this.elem, "rdppass", "Password", true));
     this.menu2 = new Group();
     options = {0:"LAN",
                1:"Broadband",
@@ -150,7 +150,7 @@ var Logo = function(parent){
     this.elem.style["background-size"] = "contain";
     this.elem.style["background-repeat"] = "no-repeat";
 }
-var TextEntry = function(parent, id, caption){
+var TextEntry = function(parent, id, caption, isPassword){
     this.elem = document.createElement("div");
     parent.appendChild(this.elem);
     this.id = id;
@@ -185,16 +185,16 @@ var TextEntry = function(parent, id, caption){
         this.captionElem.innerHTML = "<p class='textareacaption' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
     }
     this.createCaption();
-    this.createTextArea = function(){
+    this.createTextArea = function(isPass){
         this.textAreaElem = document.createElement("div");
         this.elem.appendChild(this.textAreaElem);
         this.textAreaElem.style["position"] = "relative";
         this.textAreaElem.style["width"] = "70%";
         this.textAreaElem.style["height"] = "100%";
         this.textAreaElem.style["float"] = "right";
-        this.textAreaElem.innerHTML = "<input id='" + this.id + "' style='width:100%;height:100%;resize:none;margin:1px;float:right;'></input>";
+        this.textAreaElem.innerHTML = "<input id='" + this.id + "' type='" + (isPass==true?"password":"text") + "' style='width:100%;height:100%;resize:none;margin:1px;float:right;'></input>";
     }
-    this.createTextArea();
+    this.createTextArea(isPassword);
 }
 
 var CheckButton = function(parent, id, caption){
