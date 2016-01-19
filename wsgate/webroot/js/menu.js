@@ -26,6 +26,10 @@ var LoginMenu = function(){
     this.menu2.push(new TextEntry(this.elem, "test", "PCB (vmID)"));
     this.menu2.push(new CheckButton(this.elem, "test", "disable NLA"));
     this.menu2.push(new CheckButton(this.elem, "test", "disable TLS"));
+    options = {0:"disabled",
+               1:"NTLM v1",
+               2:"NTLM v2"};
+    this.menu2.push(new MultiSelection(this.elem, "test", "Force NTLM auth", options));
     this.menu2.hide();
     this.connect = new Button(this.elem, "Connect", 30);
     //add the advanced button, show the advanced menu and hide the button
@@ -196,14 +200,15 @@ var CheckButton = function(parent, id, caption){
     this.caption = caption;
     this.elem.style["position"] = "relative";
     this.elem.style["width"] = "100%";
+    this.elem.style["height"] = "0px";
     this.elem.style["overflow"] = "hidden";
     this.elem.classname = "checkbutton";
     this.update = function(){
         //we need an extra pixel so the element has a bottom edge of 2px height
         this.height += ((this.heightTarget + 2) - this.height)*0.1;
         this.elem.style["height"] = this.height + "px";
-        this.textAreaElem.style["width"] = (this.height - 1) + "px";
-        this.textAreaElem.style["height"] = (this.height - 1)  + "px";
+        this.checkAreaElem.style["width"] = (this.height - 1) + "px";
+        this.checkAreaElem.style["height"] = (this.height - 1)  + "px";
     }
     this.show = function(){
         this.heightTarget = this.heightExpanded;
@@ -223,13 +228,64 @@ var CheckButton = function(parent, id, caption){
     }
     this.createCaption();
     this.createCheckBox = function(){
-        this.textAreaElem = document.createElement("div");
-        this.elem.appendChild(this.textAreaElem);
-        this.textAreaElem.style["position"] = "relative";
-        this.textAreaElem.style["margin-top"] = "1px";
-        this.textAreaElem.style["margin-right"] = "1px";
-        this.textAreaElem.style["float"] = "right";
-        this.textAreaElem.innerHTML = "<input id='" + this.id + "' type='checkbox' style='width:100%;height:100%;resize:none;float:right;'></input>";
+        this.checkAreaElem = document.createElement("div");
+        this.elem.appendChild(this.checkAreaElem);
+        this.checkAreaElem.style["position"] = "relative";
+        this.checkAreaElem.style["margin-top"] = "1px";
+        this.checkAreaElem.style["margin-right"] = "1px";
+        this.checkAreaElem.style["float"] = "right";
+        this.checkAreaElem.innerHTML = "<input id='" + this.id + "' type='checkbox' style='width:100%;height:100%;resize:none;float:right;'></input>";
     }
     this.createCheckBox();
+}
+var MultiSelection = function(parent, id, caption, options){
+    this.elem = document.createElement("div");
+    parent.appendChild(this.elem);
+    this.id = id;
+    this.heightExpanded = 30;
+    this.heightTarget = this.heightExpanded;
+    this.height = 0;
+    this.caption = caption;
+    this.elem.style["position"] = "relative";
+    this.elem.style["width"] = "100%";
+    this.elem.style["height"] = "0px";
+    this.elem.style["overflow"] = "hidden";
+    this.elem.classname = "multiselection";
+    this.update = function(){
+        //we need an extra pixel so the element has a bottom edge of 2px height
+        this.height += ((this.heightTarget + 2) - this.height)*0.1;
+        this.elem.style["height"] = this.height + "px";
+        this.multiAreaElem.style["width"] = "50%";
+        this.multiAreaElem.style["height"] =( this.height-3) + "px";
+    }
+    this.show = function(){
+        this.heightTarget = this.heightExpanded;
+    }
+    this.hide = function(){
+        this.heightTarget = -2;
+    }
+    this.createCaption = function(){
+        this.captionElem = document.createElement("div");
+        this.elem.appendChild(this.captionElem);
+        this.captionElem.style["position"] = "relative";
+        this.captionElem.style["width"] = "50%";
+        this.captionElem.style["height"] = "100%";
+        this.captionElem.style["display"] = "table";
+        this.captionElem.style["float"] = "left";
+        this.captionElem.innerHTML = "<p class='textareacaption' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
+    }
+    this.createCaption();
+    this.createMultiSelection = function(options){
+        this.multiAreaElem = document.createElement("div");
+        this.elem.appendChild(this.multiAreaElem);
+        this.multiAreaElem.style["position"] = "relative";
+        this.multiAreaElem.style["float"] = "right";
+        html = "<select id='" + this.id + "' style='height:100%;width:100%;float:right;'>";
+        for(var option in options){
+            html += "<option value='" + option + "'>" + options[option] + "</option>";
+        }
+        html += "</select>";
+        this.multiAreaElem.innerHTML = html;
+    }
+    this.createMultiSelection(options);
 }
