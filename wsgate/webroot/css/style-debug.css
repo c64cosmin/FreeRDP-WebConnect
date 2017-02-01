@@ -510,3 +510,7 @@ label.big {
 .textareacaption {
   color: rgb(200,200,255);
 }
+
+.clickhighlight {
+  background-color: #c7c7c7;
+}

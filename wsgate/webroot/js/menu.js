@@ -157,6 +157,9 @@ var Button = function(parent, id, caption, height){
         this.captionElem.style["display"] = "table";
         this.captionElem.style["float"] = "left";
         this.captionElem.innerHTML = "<p class='textareacaption' id='" + this.id + "' style='display:table-cell;vertical-align:middle;text-align:center'>" + this.caption + "</p>";
+        var elem = this.captionElem;
+        this.elem.addEventListener("mousedown", function(){elem.addClass('clickhighlight');});
+        this.elem.addEventListener("mouseup", function(){elem.removeClass('clickhighlight');});
     }
     this.createCaption();
     this.update = function(){
