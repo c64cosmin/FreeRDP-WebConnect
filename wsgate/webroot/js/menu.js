@@ -57,6 +57,11 @@ var LoginMenu = function(){
     });
 
     this.update = function(){
+        if(this.state == "embedded")return;
+        if(embedded == true){
+            this.state = "embedded";
+            document.body.removeChild(this.elem);
+        }
         if(this.state == "center"){
             //we add 1px for the bottom margin
             this.heightTarget = (this.logo.height + this.menu1.height + this.menu2.height + this.menu3.height + this.connect.height + 1) / window.innerHeight;

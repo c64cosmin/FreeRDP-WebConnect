@@ -74,7 +74,7 @@
                 frontCanvas.width = $("screen").width * frontCanvas.scale;
                 frontCanvas.height = window.innerHeight;
                 frontCanvas.trans = (window.innerWidth - frontCanvas.width)/2;
-                if(frontCanvas.trans < loginmenu.x + loginmenu.width)
+                if(frontCanvas.trans < loginmenu.x + loginmenu.width && !embedded)
                     frontCanvas.trans = loginmenu.x + loginmenu.width;
                 frontCanvas.setStyle("left", frontCanvas.trans + "px");
                 frontCanvas.setStyle("top", "0px");
